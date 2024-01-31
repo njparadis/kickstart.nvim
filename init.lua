@@ -190,16 +190,21 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    -- TOKYOOOOOOOOOOOOOOOOOOOOOO
+    'folke/tokyonight.nvim',
     priority = 1000,
     lazy = false,
     config = function()
-      require('onedark').setup {
-        -- Set a style preset. 'dark' is default.
-        style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
+      require('tokyonight').setup {
+        -- Set a style preset. 'night' is default.
+        style = 'night', -- storm, moon, night, day
+        terminal_colors = true,
+        transparent = true,
+        styles = {
+          comments = { italic = true, },
+        },
       }
-      require('onedark').load()
+      require('tokyonight').load()
     end,
   },
 
@@ -238,15 +243,16 @@ require('lazy').setup({
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
       -- Only load if `make` is available. Make sure you have the system
       -- requirements installed.
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
+      -- {
+      --   'nvim-telescope/telescope-fzf-native.nvim',
+      --   -- NOTE: If you are having trouble with this installation,
+      --   --       refer to the README for telescope-fzf-native for more instructions.
+      --   build = 'make',
+      --   cond = function()
+      --     return vim.fn.executable 'make' == 1
+      --   end,
+      -- },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
     },
   },
 
@@ -575,10 +581,10 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  pyright = {},
+  rust_analyzer = {},
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
     Lua = {

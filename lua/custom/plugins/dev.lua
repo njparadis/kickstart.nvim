@@ -1,0 +1,8 @@
+-- return {
+-- 	{
+-- 		dir = "~/Projects/krfc.nvim",
+-- 		-- config = function()
+-- 		-- 	require "krfc"
+-- 		-- end
+-- 	}
+-- }

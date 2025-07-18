@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -120,6 +120,12 @@ end)
 
 -- Enable break indent
 vim.o.breakindent = true
+
+-- Indent settings
+vim.o.tabstop = 2        -- Number of spaces that a <Tab> in the file counts for
+vim.o.shiftwidth = 2     -- Number of spaces to use for each step of (auto)indent
+vim.o.softtabstop = 2    -- Number of spaces that a <Tab> counts for while editing
+vim.o.expandtab = true   -- Use spaces instead of tabs
 
 -- Save undo history
 vim.o.undofile = true
@@ -835,7 +841,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'super-tab',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -876,25 +882,58 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
+  {
+    -- GitHub Copilot
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    -- Lazy load when event occurs. Events are triggered
+    -- as mentioned in:
+    -- https://vi.stackexchange.com/a/4495/20389
+    event = "InsertEnter",
+    -- You can also have it load at immediately at
+    -- startup by commenting above and uncommenting below:
+    -- lazy = false,
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
+      require("copilot").setup({
+        -- Disable suggestion and panel when using copilot-cmp
+        -- suggestion = { enabled = false, },
+        -- panel = { enabled = false, },
+        panel = {
+          enabled = true,
+          auto_refresh = true,
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<Tab>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          },
+        },
+      })
+    end,
+  },
+
+  {
+    -- TOKYOOOOOOOOOOOOOOOOOOOOOO
+    'folke/tokyonight.nvim',
+    priority = 42069,
+    lazy = false,
+    config = function()
       require('tokyonight').setup {
+        -- Set a style preset. 'night' is default.
+        style = 'night', -- storm, moon, night, day
+        terminal_colors = true,
+        transparent = true,
         styles = {
-          comments = { italic = false }, -- Disable italics in comments
+          comments = { italic = true, },
         },
       }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      require('tokyonight').load()
     end,
   },
 

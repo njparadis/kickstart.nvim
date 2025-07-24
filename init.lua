@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -122,10 +122,10 @@ end)
 vim.o.breakindent = true
 
 -- Indent settings
-vim.o.tabstop = 2        -- Number of spaces that a <Tab> in the file counts for
-vim.o.shiftwidth = 2     -- Number of spaces to use for each step of (auto)indent
-vim.o.softtabstop = 2    -- Number of spaces that a <Tab> counts for while editing
-vim.o.expandtab = true   -- Use spaces instead of tabs
+vim.o.tabstop = 2 -- Number of spaces that a <Tab> in the file counts for
+vim.o.shiftwidth = 2 -- Number of spaces to use for each step of (auto)indent
+vim.o.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing
+vim.o.expandtab = true -- Use spaces instead of tabs
 
 -- Save undo history
 vim.o.undofile = true
@@ -181,6 +181,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -884,17 +885,17 @@ require('lazy').setup({
 
   {
     -- GitHub Copilot
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
     -- Lazy load when event occurs. Events are triggered
     -- as mentioned in:
     -- https://vi.stackexchange.com/a/4495/20389
-    event = "InsertEnter",
+    event = 'InsertEnter',
     -- You can also have it load at immediately at
     -- startup by commenting above and uncommenting below:
     -- lazy = false,
     config = function()
-      require("copilot").setup({
+      require('copilot').setup {
         -- Disable suggestion and panel when using copilot-cmp
         -- suggestion = { enabled = false, },
         -- panel = { enabled = false, },
@@ -906,15 +907,15 @@ require('lazy').setup({
           enabled = true,
           auto_trigger = true,
           keymap = {
-            accept = "<Tab>",
+            accept = '<Tab>',
             accept_word = false,
             accept_line = false,
-            next = "<M-]>",
-            prev = "<M-[>",
-            dismiss = "<C-]>",
+            next = '<M-]>',
+            prev = '<M-[>',
+            dismiss = '<C-]>',
           },
         },
-      })
+      }
     end,
   },
 
@@ -930,7 +931,7 @@ require('lazy').setup({
         terminal_colors = true,
         transparent = true,
         styles = {
-          comments = { italic = true, },
+          comments = { italic = true },
         },
       }
       require('tokyonight').load()

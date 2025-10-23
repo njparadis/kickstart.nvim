@@ -679,7 +679,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -690,6 +690,42 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+
+        -- Ruff (Python linter and formatter)
+        -- Hover is disabled in favor of basedpyright
+        ruff = {
+          on_attach = function(client, bufnr)
+            -- Disable hover in favour of basedpyright
+            client.server_capabilities.hoverProvider = false
+          end,
+          init_options = {
+            settings = {
+              logLevel = 'error',
+              showSyntaxErrors = true,
+            }
+          },
+        },
+
+        -- BasedPyright (Python type checker)
+        -- Formatting is disabled in favor of ruff
+        basedpyright = {
+          on_attach = function(client, bufnr)
+            -- Disable formatting in favour of ruff
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+          settings = {
+            basedpyright = {
+              analysis = {
+                autoImportCompletions = true,
+                diagnosticMode = 'workspace',
+                reportImplicitRelativeImport = 'none',
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -775,6 +811,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        python = { 'ruff_format', 'ruff_organize_imports' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -907,7 +944,7 @@ require('lazy').setup({
           enabled = true,
           auto_trigger = true,
           keymap = {
-            accept = '<Tab>',
+            accept = '<C-y>',
             accept_word = false,
             accept_line = false,
             next = '<M-]>',

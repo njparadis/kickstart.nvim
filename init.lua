@@ -679,7 +679,26 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {},
+        gopls = {
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+                unusedwrite = true,
+                useany = true,
+              },
+              staticcheck = true,
+              gofumpt = true,
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+            },
+          },
+        },
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -702,7 +721,7 @@ require('lazy').setup({
             settings = {
               logLevel = 'error',
               showSyntaxErrors = true,
-            }
+            },
           },
         },
 
@@ -811,6 +830,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        go = { 'goimports' },
         python = { 'ruff_format', 'ruff_organize_imports' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
@@ -913,47 +933,11 @@ require('lazy').setup({
       -- the rust implementation via `'prefer_rust_with_warning'`
       --
       -- See :h blink-cmp-config-fuzzy for more information
-      fuzzy = { implementation = 'lua' },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
     },
-  },
-
-  {
-    -- GitHub Copilot
-    'zbirenbaum/copilot.lua',
-    cmd = 'Copilot',
-    -- Lazy load when event occurs. Events are triggered
-    -- as mentioned in:
-    -- https://vi.stackexchange.com/a/4495/20389
-    event = 'InsertEnter',
-    -- You can also have it load at immediately at
-    -- startup by commenting above and uncommenting below:
-    -- lazy = false,
-    config = function()
-      require('copilot').setup {
-        -- Disable suggestion and panel when using copilot-cmp
-        -- suggestion = { enabled = false, },
-        -- panel = { enabled = false, },
-        panel = {
-          enabled = true,
-          auto_refresh = true,
-        },
-        suggestion = {
-          enabled = true,
-          auto_trigger = true,
-          keymap = {
-            accept = '<C-y>',
-            accept_word = false,
-            accept_line = false,
-            next = '<M-]>',
-            prev = '<M-[>',
-            dismiss = '<C-]>',
-          },
-        },
-      }
-    end,
   },
 
   {
@@ -1021,7 +1005,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'go', 'gomod', 'gosum', 'gowork' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1050,12 +1034,12 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.

@@ -760,6 +760,11 @@ require('lazy').setup({
             },
           },
         },
+
+        -- Zig language server. Provides completion, goto-def, diagnostics, and
+        -- formatting (via `zig fmt`), so no conform.nvim entry is needed for zig.
+        -- Mason installs the zls release matching your installed zig version.
+        zls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -1005,7 +1010,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'go', 'gomod', 'gosum', 'gowork' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'go', 'gomod', 'gosum', 'gowork', 'zig' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
